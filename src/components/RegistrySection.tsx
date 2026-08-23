@@ -5,6 +5,7 @@ import { LEFT_FOOTER_BADGE, RIGHT_FOOTER_BADGE } from '../assets/images';
 import { AnimatedCounter } from './AnimatedCounter';
 import { createCheckoutSession } from '../services/api';
 import { UserQRCodeSection } from './UserQRCodeSection';
+import { InstallAppBanner } from './InstallAppBanner';
 
 export const RegistrySection: React.FC = () => {
   const { stats, registerPlayer, registeredUser, clearRegistration, userToken } = useStats();
@@ -481,6 +482,9 @@ export const RegistrySection: React.FC = () => {
                   Register Another Player
                 </button>
               </div>
+
+              {/* PWA INSTALL BANNER */}
+              <InstallAppBanner />
 
               {/* PERSISTENT QR CODE SECTION */}
               <UserQRCodeSection />

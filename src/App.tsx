@@ -14,6 +14,7 @@ import { LoginModal } from './components/LoginModal';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { PaymentSuccessPage } from './pages/PaymentSuccessPage';
 import { PaymentCancelledPage } from './pages/PaymentCancelledPage';
+import { InstallAppBanner } from './components/InstallAppBanner';
 import { useStats } from './context/StatsContext';
 
 const MainAppContent: React.FC = () => {
@@ -29,6 +30,9 @@ const MainAppContent: React.FC = () => {
   return (
     <>
       <Navbar onOpenModal={handleOpenModal} />
+      <div style={{ maxWidth: '1200px', margin: '80px auto 0 auto', padding: '0 20px' }}>
+        <InstallAppBanner />
+      </div>
       <LiveTracker />
       <HeroSection onOpenModal={handleOpenModal} />
       <StatsBand />
