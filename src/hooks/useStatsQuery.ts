@@ -6,8 +6,8 @@ export const useStatsQuery = () => {
   return useQuery<AppStats, Error>({
     queryKey: ['stats'],
     queryFn: fetchStats,
-    refetchInterval: 8000,
-    initialData: {
+    refetchInterval: 5000,
+    placeholderData: {
       total: 342891,
       left: 131670,
       right: 211221,
