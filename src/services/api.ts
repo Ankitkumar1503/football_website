@@ -1,7 +1,10 @@
 import axios from 'axios';
 import type { AppStats, PlayerRegistration, AdminUsersResponse, AuthResponse } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = (rawBaseUrl.endsWith('/api') || rawBaseUrl.endsWith('/api/'))
+  ? rawBaseUrl.replace(/\/+$/, '')
+  : (rawBaseUrl.startsWith('/') ? rawBaseUrl.replace(/\/+$/, '') : `${rawBaseUrl.replace(/\/+$/, '')}/api`);
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
