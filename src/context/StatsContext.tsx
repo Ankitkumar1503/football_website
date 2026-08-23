@@ -29,6 +29,19 @@ interface StatsContextType {
   markUserAsPaid: () => void;
 }
 
+export const isTokenExpired = (token: string | null): boolean => {
+  if (!token) return true;
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return true;
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+    if (!payload.exp) return false;
+    return payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+};
+
 const StatsContext = createContext<StatsContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEY = 'touches_registered_user';
@@ -44,7 +57,14 @@ export const StatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const [userToken, setUserToken] = useState<string | null>(() => {
     try {
-      return localStorage.getItem(TOKEN_KEY);
+      const saved = localStorage.getItem(TOKEN_KEY);
+      if (saved && !isTokenExpired(saved)) {
+        return saved;
+      }
+      if (saved) {
+        localStorage.removeItem(TOKEN_KEY);
+      }
+      return null;
     } catch {
       return null;
     }
@@ -52,6 +72,11 @@ export const StatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const [registeredUser, setRegisteredUser] = useState<RegisteredUser | null>(() => {
     try {
+      const savedToken = localStorage.getItem(TOKEN_KEY);
+      if (!savedToken || isTokenExpired(savedToken)) {
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        return null;
+      }
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       return saved ? JSON.parse(saved) : null;
     } catch {

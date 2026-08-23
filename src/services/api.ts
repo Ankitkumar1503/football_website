@@ -1,7 +1,22 @@
 import axios from 'axios';
 import type { AppStats, PlayerRegistration, AdminUsersResponse, AuthResponse } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const rawBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
+const getApiBaseUrl = (): string => {
+  if (!rawBaseUrl || rawBaseUrl.trim() === '') {
+    return '/api';
+  }
+  const cleanUrl = rawBaseUrl.trim().replace(/\/+$/, '');
+  if (!cleanUrl.endsWith('/api')) {
+    return `${cleanUrl}/api`;
+  }
+  return cleanUrl;
+};
+
+export const API_BASE_URL = getApiBaseUrl();
+
+console.log('🔗 TOUCHES API Base URL initialized:', API_BASE_URL);
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
