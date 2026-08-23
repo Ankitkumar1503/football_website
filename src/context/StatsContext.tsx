@@ -147,19 +147,35 @@ export const StatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const registerPlayer = async (player: PlayerRegistration): Promise<boolean> => {
+    let tokenFromRes: string | null = null;
+    let userFromRes: any = null;
+
     try {
-      await registerMutation.mutateAsync(player);
+      const res: any = await registerMutation.mutateAsync(player);
+      if (res && res.token) {
+        tokenFromRes = res.token;
+      }
+      if (res && res.user) {
+        userFromRes = res.user;
+      }
     } catch (err) {
       console.warn('API Error, using fallback state update:', err);
     }
 
     const userToSave: RegisteredUser = {
       ...player,
+      id: userFromRes?.id || player.email,
+      name: player.name || (player.firstName ? `${player.firstName} ${player.lastName || ''}`.trim() : 'Player'),
       paymentStatus: player.paymentStatus || 'unpaid',
       registeredAt: new Date().toISOString(),
     };
+
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userToSave));
+      if (tokenFromRes) {
+        localStorage.setItem(TOKEN_KEY, tokenFromRes);
+        setUserToken(tokenFromRes);
+      }
     } catch (e) {
       console.error(e);
     }

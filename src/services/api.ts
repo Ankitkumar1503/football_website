@@ -15,9 +15,9 @@ export const fetchStats = async (): Promise<AppStats> => {
   return response.data.data;
 };
 
-export const createRegistration = async (player: PlayerRegistration): Promise<PlayerRegistration> => {
-  const response = await apiClient.post<{ success: boolean; data: PlayerRegistration }>('/registrations', player);
-  return response.data.data;
+export const createRegistration = async (player: PlayerRegistration): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>('/registrations', player);
+  return response.data;
 };
 
 export const userLoginApi = async (credentials: { email: string; password?: string }): Promise<AuthResponse> => {
