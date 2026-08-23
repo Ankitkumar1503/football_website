@@ -15,7 +15,6 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { PaymentSuccessPage } from './pages/PaymentSuccessPage';
 import { PaymentCancelledPage } from './pages/PaymentCancelledPage';
 import { useStats } from './context/StatsContext';
-import { API_BASE_URL } from './services/api';
 
 const MainAppContent: React.FC = () => {
   const { isLoginModalOpen, closeLoginModal } = useStats();
@@ -64,9 +63,6 @@ export const App: React.FC = () => {
 
   return (
     <StatsProvider>
-      <div style={{ background: '#FFD700', color: '#000', padding: '6px 12px', fontSize: '12px', fontWeight: 800, textAlign: 'center', position: 'sticky', top: 0, zIndex: 99999, borderBottom: '1px solid #000' }}>
-        🔗 DEBUG API BASE URL: <code style={{ background: '#000', color: '#00FF66', padding: '2px 6px', borderRadius: '4px' }}>{API_BASE_URL}</code> | VITE_ENV: <code style={{ background: '#000', color: '#FF9900', padding: '2px 6px', borderRadius: '4px' }}>{import.meta.env.VITE_API_BASE_URL || 'NOT_SET'}</code>
-      </div>
       {currentPath.startsWith('/admin') && <AdminDashboard />}
       {currentPath.startsWith('/payment-success') && <PaymentSuccessPage />}
       {currentPath.startsWith('/payment-cancelled') && <PaymentCancelledPage />}

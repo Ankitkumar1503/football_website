@@ -1,27 +1,7 @@
 import axios from 'axios';
 import type { AppStats, PlayerRegistration, AdminUsersResponse, AuthResponse } from '../types';
 
-const rawBaseUrl = import.meta.env.VITE_API_BASE_URL;
-
-const getApiBaseUrl = (): string => {
-  // 1. Check build-time VITE_API_BASE_URL
-  if (rawBaseUrl && typeof rawBaseUrl === 'string' && rawBaseUrl.trim() !== '') {
-    const cleanUrl = rawBaseUrl.trim().replace(/\/+$/, '');
-    return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`;
-  }
-
-  // 2. Production Vercel domain fallback (guarantees Railway backend URL on Vercel deployments)
-  if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
-    return 'https://footballbackend-production-9919.up.railway.app/api';
-  }
-
-  // 3. Local fallback
-  return '/api';
-};
-
-export const API_BASE_URL = getApiBaseUrl();
-
-console.log('🔗 TOUCHES API Base URL initialized:', API_BASE_URL);
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -35,9 +15,9 @@ export const fetchStats = async (): Promise<AppStats> => {
   return response.data.data;
 };
 
-export const createRegistration = async (player: PlayerRegistration): Promise<AuthResponse> => {
-  const response = await apiClient.post<AuthResponse>('/registrations', player);
-  return response.data;
+export const createRegistration = async (player: PlayerRegistration): Promise<PlayerRegistration> => {
+  const response = await apiClient.post<{ success: boolean; data: PlayerRegistration }>('/registrations', player);
+  return response.data.data;
 };
 
 export const userLoginApi = async (credentials: { email: string; password?: string }): Promise<AuthResponse> => {

@@ -29,19 +29,6 @@ interface StatsContextType {
   markUserAsPaid: () => void;
 }
 
-export const isTokenExpired = (token: string | null): boolean => {
-  if (!token) return true;
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return true;
-    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
-    if (!payload.exp) return false;
-    return payload.exp * 1000 < Date.now();
-  } catch {
-    return true;
-  }
-};
-
 const StatsContext = createContext<StatsContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_KEY = 'touches_registered_user';
@@ -57,14 +44,7 @@ export const StatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const [userToken, setUserToken] = useState<string | null>(() => {
     try {
-      const saved = localStorage.getItem(TOKEN_KEY);
-      if (saved && !isTokenExpired(saved)) {
-        return saved;
-      }
-      if (saved) {
-        localStorage.removeItem(TOKEN_KEY);
-      }
-      return null;
+      return localStorage.getItem(TOKEN_KEY);
     } catch {
       return null;
     }
@@ -72,11 +52,6 @@ export const StatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const [registeredUser, setRegisteredUser] = useState<RegisteredUser | null>(() => {
     try {
-      const savedToken = localStorage.getItem(TOKEN_KEY);
-      if (!savedToken || isTokenExpired(savedToken)) {
-        localStorage.removeItem(LOCAL_STORAGE_KEY);
-        return null;
-      }
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
       return saved ? JSON.parse(saved) : null;
     } catch {
@@ -172,35 +147,19 @@ export const StatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const registerPlayer = async (player: PlayerRegistration): Promise<boolean> => {
-    let tokenFromRes: string | null = null;
-    let userFromRes: any = null;
-
     try {
-      const res: any = await registerMutation.mutateAsync(player);
-      if (res && res.token) {
-        tokenFromRes = res.token;
-      }
-      if (res && res.user) {
-        userFromRes = res.user;
-      }
+      await registerMutation.mutateAsync(player);
     } catch (err) {
       console.warn('API Error, using fallback state update:', err);
     }
 
     const userToSave: RegisteredUser = {
       ...player,
-      id: userFromRes?.id || player.email,
-      name: player.name || (player.firstName ? `${player.firstName} ${player.lastName || ''}`.trim() : 'Player'),
       paymentStatus: player.paymentStatus || 'unpaid',
       registeredAt: new Date().toISOString(),
     };
-
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(userToSave));
-      if (tokenFromRes) {
-        localStorage.setItem(TOKEN_KEY, tokenFromRes);
-        setUserToken(tokenFromRes);
-      }
     } catch (e) {
       console.error(e);
     }
