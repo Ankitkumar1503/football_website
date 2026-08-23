@@ -7,7 +7,7 @@ import { createCheckoutSession } from '../services/api';
 import { UserQRCodeSection } from './UserQRCodeSection';
 
 export const RegistrySection: React.FC = () => {
-  const { stats, registerPlayer, registeredUser, clearRegistration } = useStats();
+  const { stats, registerPlayer, registeredUser, clearRegistration, userToken } = useStats();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -450,11 +450,7 @@ export const RegistrySection: React.FC = () => {
                     type="button"
                     onClick={async () => {
                       try {
-                        const res = await createCheckoutSession({
-                          userId: registeredUser.id,
-                          email: registeredUser.email,
-                          name: registeredUser.name || registeredUser.firstName,
-                        });
+                        const res = await createCheckoutSession(userToken);
                         if (res.url) {
                           window.location.href = res.url;
                         }

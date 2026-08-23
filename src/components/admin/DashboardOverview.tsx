@@ -153,10 +153,10 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
               <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '18px', fontWeight: 800, color: '#E84D1A' }}>
-                LEFT {leftPct}%
+                LEFT {leftPct}% <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 600 }}>({leftCount})</span>
               </span>
               <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '18px', fontWeight: 800, color: '#1A8AE8' }}>
-                RIGHT {rightPct}%
+                RIGHT {rightPct}% <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 600 }}>({rightCount})</span>
               </span>
             </div>
           </div>

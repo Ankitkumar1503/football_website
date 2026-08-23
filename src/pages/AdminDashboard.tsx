@@ -44,9 +44,9 @@ export const AdminDashboard: React.FC = () => {
       setError(null);
       const data = await fetchAdminUsers(targetPage, 10);
       setUsers(data.users || []);
-      setTotal(data.total || 0);
-      setPage(data.page || 1);
-      setTotalPages(data.totalPages || 1);
+      setTotal(data.pagination?.total ?? data.total ?? 0);
+      setPage(data.pagination?.page ?? data.page ?? 1);
+      setTotalPages(data.pagination?.totalPages ?? data.totalPages ?? 1);
     } catch (err: any) {
       console.error(err);
       setError(err.response?.data?.message || 'Failed to load user directory');

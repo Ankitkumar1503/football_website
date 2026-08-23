@@ -62,4 +62,7 @@ export interface AdminUsersResponse {
     limit: number;
     totalPages: number;
   };
+  total?: number;
+  page?: number;
+  totalPages?: number;
 }

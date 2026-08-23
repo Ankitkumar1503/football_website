@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AppStats, PlayerRegistration, AdminUser, AdminUsersResponse, AuthResponse } from '../types';
+import type { AppStats, PlayerRegistration, AdminUsersResponse, AuthResponse } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
@@ -41,9 +41,9 @@ export const createCheckoutSession = async (userToken?: string | null): Promise<
   return response.data;
 };
 
-export const verifyPaymentSession = async (sessionId: string, userToken?: string | null): Promise<{ success: boolean; paid: boolean; amount: number; paymentStatus?: string; user?: any }> => {
+export const verifyPaymentSession = async (sessionId: string, userToken?: string | null): Promise<{ success: boolean; paid: boolean; amount: number; paymentStatus?: string; paymentDate?: string; user?: any }> => {
   const headers = userToken ? { Authorization: `Bearer ${userToken}` } : {};
-  const response = await apiClient.get<{ success: boolean; paid: boolean; amount: number; paymentStatus?: string; user?: any }>(`/payment/verify-session?session_id=${sessionId}`, { headers });
+  const response = await apiClient.get<{ success: boolean; paid: boolean; amount: number; paymentStatus?: string; paymentDate?: string; user?: any }>(`/payment/verify-session?session_id=${sessionId}`, { headers });
   return response.data;
 };
 

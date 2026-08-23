@@ -1,28 +1,11 @@
 import React from 'react';
 import {
-  QrCode,
   Send,
   User,
-  Trophy,
-  Target,
-  Shield,
-  Flag,
-  RotateCcw,
-  FileText,
-  ThumbsUp,
-  ThumbsDown,
   ArrowLeft,
   Settings,
-  Zap,
   Sparkles,
-  ChevronRight,
-  Activity,
-  Footprints,
-  Clock,
-  MapPin,
-  Share2,
-  Sliders,
-  CheckCircle2
+  ChevronRight
 } from 'lucide-react';
 import { SCREEN_1 } from '../assets/images';
 
