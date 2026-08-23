@@ -57,3 +57,5 @@ export const verifyLoginTokenApi = async (loginToken: string): Promise<AuthRespo
   const response = await apiClient.get<AuthResponse>(`/auth/verify-login-token?token=${loginToken}`);
   return response.data;
 };
+
+export default apiClient;
