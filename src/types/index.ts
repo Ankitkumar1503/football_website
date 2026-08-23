@@ -9,6 +9,7 @@ export interface AppStats {
 }
 
 export interface PlayerRegistration {
+  id?: number | string;
   name?: string;
   firstName?: string;
   lastName?: string;
