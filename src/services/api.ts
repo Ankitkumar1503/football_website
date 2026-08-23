@@ -4,14 +4,19 @@ import type { AppStats, PlayerRegistration, AdminUsersResponse, AuthResponse } f
 const rawBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const getApiBaseUrl = (): string => {
-  if (!rawBaseUrl || rawBaseUrl.trim() === '') {
-    return '/api';
+  // 1. Check build-time VITE_API_BASE_URL
+  if (rawBaseUrl && typeof rawBaseUrl === 'string' && rawBaseUrl.trim() !== '') {
+    const cleanUrl = rawBaseUrl.trim().replace(/\/+$/, '');
+    return cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`;
   }
-  const cleanUrl = rawBaseUrl.trim().replace(/\/+$/, '');
-  if (!cleanUrl.endsWith('/api')) {
-    return `${cleanUrl}/api`;
+
+  // 2. Production Vercel domain fallback (guarantees Railway backend URL on Vercel deployments)
+  if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+    return 'https://footballbackend-production-9919.up.railway.app/api';
   }
-  return cleanUrl;
+
+  // 3. Local fallback
+  return '/api';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
