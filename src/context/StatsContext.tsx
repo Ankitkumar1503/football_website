@@ -183,11 +183,11 @@ export const StatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const stats: AppStats = statsData || {
-    total: 3000,
-    left: 1200,
-    right: 1800,
-    downloads: 3100,
-    countries: 142,
+    total: 0,
+    left: 0,
+    right: 0,
+    downloads: 0,
+    countries: 0,
   };
 
   return (

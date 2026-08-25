@@ -17,13 +17,13 @@ const formatK = (num: number): string => {
 };
 
 export const LiveTracker: React.FC = () => {
-  const { stats } = useStats();
+  const { stats, isLoading } = useStats();
   const barRef = useRef<HTMLDivElement>(null);
   const isBarInView = useInView(barRef, { once: true });
 
   const totalFoot = stats.left + stats.right;
-  const leftPct = totalFoot > 0 ? Math.round((stats.left / totalFoot) * 100) : 40;
-  const rightPct = 100 - leftPct;
+  const leftPct = totalFoot > 0 ? Math.round((stats.left / totalFoot) * 100) : 50;
+  const rightPct = totalFoot > 0 ? 100 - leftPct : 50;
 
   return (
     <div className="tracker-bar">
@@ -33,7 +33,7 @@ export const LiveTracker: React.FC = () => {
       <div className="tracker-stats">
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <span className="tracker-num" id="totalDownloads">
-            <AnimatedCounter target={stats.downloads} formatFn={formatK} />
+            {isLoading ? '...' : <AnimatedCounter target={stats.total} formatFn={formatK} />}
           </span>
           <span className="tracker-sub">Footballers</span>
         </div>
@@ -41,21 +41,21 @@ export const LiveTracker: React.FC = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <img src={LEFT_FOOTER_BADGE} style={{ width: '18px', height: '18px', borderRadius: '50%', objectFit: 'contain' }} alt="Left" />
           <span className="tracker-num" id="leftCount">
-            <AnimatedCounter target={stats.left} formatFn={formatK} />
+            {isLoading ? '...' : <AnimatedCounter target={stats.left} formatFn={formatK} />}
           </span>
           <span className="tracker-sub">Left</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <img src={RIGHT_FOOTER_BADGE} style={{ width: '18px', height: '18px', borderRadius: '50%', objectFit: 'contain' }} alt="Right" />
           <span className="tracker-num" id="rightCount">
-            <AnimatedCounter target={stats.right} formatFn={formatK} />
+            {isLoading ? '...' : <AnimatedCounter target={stats.right} formatFn={formatK} />}
           </span>
           <span className="tracker-sub">Right</span>
         </div>
       </div>
       <div className="tracker-split" ref={barRef}>
         <span className="bar-pct l" id="leftPct">
-          <AnimatedCounter target={leftPct} formatFn={(n) => `${n}%`} />
+          {isLoading ? '...' : <AnimatedCounter target={leftPct} formatFn={(n) => `${n}%`} />}
         </span>
         <div className="bar-wrap" style={{ display: 'flex', gap: '4px', background: 'transparent', height: '4px' }}>
           <motion.div
@@ -76,7 +76,7 @@ export const LiveTracker: React.FC = () => {
           ></motion.div>
         </div>
         <span className="bar-pct r" id="rightPct">
-          <AnimatedCounter target={rightPct} formatFn={(n) => `${n}%`} />
+          {isLoading ? '...' : <AnimatedCounter target={rightPct} formatFn={(n) => `${n}%`} />}
         </span>
       </div>
     </div>

@@ -1,9 +1,8 @@
 import axios from 'axios';
 import type { AppStats, PlayerRegistration, AdminUsersResponse, AuthResponse } from '../types';
 
-// Hardcoded production Railway URL fallback so builds on Vercel without env vars never hit vercel.app domain
-const RAILWAY_BACKEND_URL = 'https://footballbackend-production-9919.up.railway.app/api';
-const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || RAILWAY_BACKEND_URL;
+const DEFAULT_LOCAL_URL = 'http://localhost:5000/api';
+const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? DEFAULT_LOCAL_URL : 'https://footballbackend-production-9919.up.railway.app/api');
 
 const API_BASE_URL = (rawBaseUrl.endsWith('/api') || rawBaseUrl.endsWith('/api/'))
   ? rawBaseUrl.replace(/\/+$/, '')

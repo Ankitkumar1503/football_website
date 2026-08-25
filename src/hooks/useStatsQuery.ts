@@ -7,13 +7,6 @@ export const useStatsQuery = () => {
     queryKey: ['stats'],
     queryFn: fetchStats,
     refetchInterval: 5000,
-    placeholderData: {
-      total: 342891,
-      left: 131670,
-      right: 211221,
-      downloads: 312000,
-      countries: 142,
-    },
   });
 };
 

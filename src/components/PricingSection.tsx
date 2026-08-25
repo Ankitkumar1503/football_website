@@ -138,8 +138,10 @@ export const PricingSection: React.FC = () => {
             </motion.button>
           )}
         </div>
-        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginTop: '14px' }}>
+        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginTop: '14px', lineHeight: '1.6' }}>
           iOS &amp; Android · Install directly from this site
+          <br />
+          APK download for Android also available here
         </p>
       </motion.div>
     </section>
