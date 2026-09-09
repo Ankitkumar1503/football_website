@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { createCheckoutSession, generateLoginTokenApi } from '../services/api';
+import { createCheckoutSession } from '../services/api';
 import { useStats } from '../context/StatsContext';
 
 export const PricingSection: React.FC = () => {
@@ -31,22 +31,6 @@ export const PricingSection: React.FC = () => {
       } else {
         alert('Unable to connect to Stripe Checkout. Please try again.');
       }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleOpenApp = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await generateLoginTokenApi(userToken);
-      if (res.url) {
-        window.open(res.url, '_blank');
-      }
-    } catch (err) {
-      console.error(err);
-      window.open('http://localhost:5175', '_blank');
     } finally {
       setLoading(false);
     }
@@ -92,12 +76,13 @@ export const PricingSection: React.FC = () => {
         </ul>
         <div className="dl-row">
           {isPaid ? (
-            <motion.button
+            <motion.a
+              id="download-apk-btn"
+              href="/app/app-release.apk"
+              download="touches.apk"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-              onClick={handleOpenApp}
-              disabled={loading}
               className="btn-download-main"
               style={{
                 fontSize: '15px',
@@ -106,16 +91,17 @@ export const PricingSection: React.FC = () => {
                 width: '100%',
                 background: '#10B981',
                 color: '#000000',
-                opacity: loading ? 0.7 : 1,
-                boxShadow: '0 4px 24px rgba(16, 185, 129, 0.4)'
+                boxShadow: '0 4px 24px rgba(16, 185, 129, 0.4)',
+                textDecoration: 'none',
+                boxSizing: 'border-box'
               }}
             >
-              <span style={{ fontSize: '20px' }}>📱</span>
+              <span style={{ fontSize: '22px' }}>📥</span>
               <div className="dl-btn-text" style={{ textAlign: 'center' }}>
                 <span className="dl-btn-sub" style={{ color: 'rgba(0,0,0,0.7)' }}>PURCHASED · LIFETIME ACCESS ACTIVE ✓</span>
-                <span className="dl-btn-main" style={{ color: '#000000' }}>{loading ? 'OPENING APP...' : "YOU'RE ALL SET! OPEN APP ↗"}</span>
+                <span className="dl-btn-main" style={{ color: '#000000' }}>DOWNLOAD APK</span>
               </div>
-            </motion.button>
+            </motion.a>
           ) : (
             <motion.button
               whileHover={{ scale: 1.04 }}
@@ -138,10 +124,20 @@ export const PricingSection: React.FC = () => {
             </motion.button>
           )}
         </div>
-        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginTop: '14px', lineHeight: '1.6' }}>
-          iOS &amp; Android · Install directly from this site
-          <br />
-          APK download for Android also available here
+        <p style={{ fontSize: '11px', color: isPaid ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.3)', marginTop: '14px', lineHeight: '1.6' }}>
+          {isPaid ? (
+            <>
+              Android APK file ready for direct download &amp; installation
+              <br />
+              No app store needed · Install directly from this website
+            </>
+          ) : (
+            <>
+              iOS &amp; Android · Install directly from this site
+              <br />
+              APK download for Android also available here
+            </>
+          )}
         </p>
       </motion.div>
     </section>

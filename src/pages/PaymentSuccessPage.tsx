@@ -340,6 +340,16 @@ export const PaymentSuccessPage: React.FC = () => {
               <div>
                 <strong style={{ color: '#FFF' }}>Android (Chrome):</strong> Tap <span style={{ color: '#38BDF8' }}>⋮ Menu ➔</span> then select <span style={{ color: '#FFF', fontWeight: 600 }}>"Install App"</span> or <span style={{ color: '#FFF', fontWeight: 600 }}>"Add to Home Screen"</span>
               </div>
+              <div style={{ marginTop: '6px', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                <strong style={{ color: '#FFF' }}>Direct Android APK:</strong>{' '}
+                <a
+                  href="/app/app-release.apk"
+                  download="touches.apk"
+                  style={{ color: '#10B981', textDecoration: 'underline', fontWeight: 600 }}
+                >
+                  Download touches.apk 📥
+                </a>
+              </div>
             </div>
           </div>
         </div>
