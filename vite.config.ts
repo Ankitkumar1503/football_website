@@ -14,6 +14,7 @@ export default defineConfig({
           if (req.url && (req.url.startsWith('/apk/') || req.url.startsWith('/app/') || req.url.endsWith('.apk'))) {
             res.setHeader('Content-Type', 'application/vnd.android.package-archive');
             res.setHeader('Content-Disposition', 'attachment; filename="touches.apk"');
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
           }
           next();
         });

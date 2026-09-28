@@ -343,7 +343,7 @@ export const PaymentSuccessPage: React.FC = () => {
               <div style={{ marginTop: '6px', paddingTop: '8px', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
                 <strong style={{ color: '#FFF' }}>Direct Android APK:</strong>{' '}
                 <a
-                  href="/app/app-release.apk"
+                  href="/app/app-release.apk?v=20260928"
                   download="touches.apk"
                   style={{ color: '#10B981', textDecoration: 'underline', fontWeight: 600 }}
                 >

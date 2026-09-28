@@ -78,7 +78,7 @@ export const PricingSection: React.FC = () => {
           {isPaid ? (
             <motion.a
               id="download-apk-btn"
-              href="/app/app-release.apk"
+              href="/app/app-release.apk?v=20260928"
               download="touches.apk"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
